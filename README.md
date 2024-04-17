@@ -7,7 +7,7 @@
 # Team members
 
 1. Sai Kumar Gadde, gaddesr@mail.uc.edu
-2. Dilip Kumar Gadde, sanipidr@mail.uc.edu
+2. Dilip Kumar Sanipina, sanipidr@mail.uc.edu
 3. Uma Satwik Meka, mekauk@mail.uc.edu
 4. Siva Sai Manoj Korlepara, korlepsj@mail.uc.edu
 
