@@ -16,7 +16,9 @@
         if (checklogin_mysql($_POST["username"],$_POST["password"])) {
             $_SESSION['authenticated'] = TRUE;
             $_SESSION['username'] = $_POST["username"];    
-            $_SESSION["browser"] = $_SERVER["HTTP_USER_AGENT"];    
+            $_SESSION["browser"] = $_SERVER["HTTP_USER_AGENT"];
+			$_SESSION["csrf"] = bin2hex(openssl_random_pseudo_bytes(16));
+    
         }else{
             session_destroy();
             echo "<script>alert('Invalid username/password');window.location='form.php';</script>";

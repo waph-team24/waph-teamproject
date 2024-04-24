@@ -116,6 +116,9 @@ function deletePost($postID) {
   return false;
 }
 
+function validateCSRFToken($token){
+  return isset($_SESSION["csrf"]) && $token === $_SESSION["csrf"];
+}
 
 ?>
 

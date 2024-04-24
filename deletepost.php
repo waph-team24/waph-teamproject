@@ -2,37 +2,35 @@
 session_start();
 include 'database.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['postID'])) {
-    $postID = $_GET['postID'];
-    // Fetch post details
-    $query = "SELECT * FROM posts WHERE postID = ?";
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param("s", $postID);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows == 1) {
-        $post = $result->fetch_assoc();
-        // Check if the logged-in user is the owner of the post
-        if (isset($_SESSION['username']) && $_SESSION['username'] == $post['owner']) {
-            $query = "DELETE FROM posts WHERE postID = ?";
-            $stmt = $mysqli->prepare($query);
-            $stmt->bind_param("s", $postID);
-            if ($stmt->execute()) {
-                header("Location: viewposts.php");
-                exit();
+$token = isset($_GET["nocsrftoken"]) ? $_GET["nocsrftoken"] : null;
+if (!validateCSRFToken($token)) {
+    echo "CSRF Attack detected";
+    exit();
+}else{
+    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['postID'])) {
+        $postID = $_GET['postID'];
+        // Fetch post details
+        $query = "SELECT * FROM posts WHERE postID = ?";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("s", $postID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows == 1) {
+            $post = $result->fetch_assoc();
+            // Check if the logged-in user is the owner of the post
+            if (isset($_SESSION['username']) && $_SESSION['username'] == $post['owner']) {
+                deletePost($postID);
             } else {
-                $error = "Error deleting post!";
+                echo "You are not authorized to delete this post!";
+                exit();
             }
         } else {
-            echo "You are not authorized to delete this post!";
+            echo "Post not found!";
             exit();
         }
     } else {
-        echo "Post not found!";
+        echo "Invalid request!";
         exit();
     }
-} else {
-    echo "Invalid request!";
-    exit();
 }
 ?>

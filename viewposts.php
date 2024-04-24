@@ -50,8 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php 
             // Check if user is logged in and is the owner of the post
             if(isset($_SESSION['username']) && $_SESSION['username'] == $post['owner']): ?>
-                <a class="btn btn-sm btn-primary" href="editpost.php?postID=<?php echo $post['postID']; ?>">Edit</a>
-                <a class="btn btn-sm btn-danger" href="deletepost.php?postID=<?php echo $post['postID']; ?>">Delete</a>
+                <a class="btn btn-sm btn-primary" href="editpost.php?postID=<?php echo $post['postID'].'&csrf='. $_SESSION['csrf']; ?>">Edit</a>
+                <a class="btn btn-sm btn-danger" href="deletepost.php?postID=<?php echo $post['postID'].'&csrf='. $_SESSION['csrf']; ?>">Delete</a>
             <?php endif; ?>
             <h3>Comments:</h3>
             <?php
