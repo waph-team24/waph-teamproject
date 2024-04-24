@@ -1,4 +1,6 @@
 <?php
+session_set_cookie_params(15*60,"/admin","waph-team24.minifacebook.com",TRUE,TRUE);
+
 session_start();
 include 'admindatabase.php';
 
@@ -21,6 +23,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     
+}
+if(!isset($_SESSION['superuser_authenticated'])){
+    echo "<script>alert('You cannot go here!');window.location='admin_form.php';</script>";
+    exit();
 }
 ?>
 

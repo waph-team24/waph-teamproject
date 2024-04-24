@@ -2,7 +2,7 @@
 session_start();
 include 'database.php';
 
-$token = isset($_GET["nocsrftoken"]) ? $_GET["nocsrftoken"] : null;
+$token = isset($_GET["csrf"]) ? $_GET["csrf"] : null;
 if (!validateCSRFToken($token)) {
     echo "CSRF Attack detected";
     exit();
@@ -20,6 +20,7 @@ if (!validateCSRFToken($token)) {
             // Check if the logged-in user is the owner of the post
             if (isset($_SESSION['username']) && $_SESSION['username'] == $post['owner']) {
                 deletePost($postID);
+                header("Location: viewposts.php");
             } else {
                 echo "You are not authorized to delete this post!";
                 exit();

@@ -9,7 +9,7 @@
 </head>
 <body>
 <?php
-    session_set_cookie_params(15*60,"/","waph-team09.minifacebook.com",TRUE,TRUE);
+    session_set_cookie_params(15*60,"/","waph-team24.minifacebook.com",TRUE,TRUE);
     session_start();
     require "database.php";
     if(isset($_POST["username"]) and isset($_POST["password"])){    
