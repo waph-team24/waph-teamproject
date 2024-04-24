@@ -93,6 +93,7 @@ Duration: 28/03/2024-07/03/2024
 
 1. In sprint 1 we have completed designing the database and created the user-table,host tables and also created database-data.sql file.
 2. we also created the user registration and login and change passwords
+
 #### Contributions: 
 
 1. Saikumar Gadde has done 5 commits over 6 hours and contributed in creating database design and developing database-data.sql 
@@ -106,34 +107,35 @@ Duration: 28/03/2024-07/03/2024
 
 #### Database-account.sql
   ```sql
-        create database waph_team;
-        CREATE USER 'waph-team24'@'localhost' IDENTIFIED BY "team@24";
-        GRANT ALL ON waph_team.* TO 'waph-team24'@'localhost';
+          create database waph_team;
+          CREATE USER 'waph-team24'@'localhost' IDENTIFIED BY "team@24";
+          GRANT ALL ON waph_team.* TO 'waph-team24'@'localhost';
  ```
+
 #### Database-data.sql
  ```sql
-        drop table if exists users; 
-drop table if exists messages; 
-drop table if exists sends; 
-drop table if exists received;
+          drop table if exists users; 
+  drop table if exists messages; 
+  drop table if exists sends; 
+  drop table if exists received;
 
-create table users(
-	username varchar(255) PRIMARY KEY, 
-	password varchar(100) NOT NULL,
-	fullname varchar(100),
-	otheremail varchar(100),
-	phone varchar(10));
-INSERT INTO users(username,password) VALUES ('test1',md5('test1'));
-INSERT INTO users(username,password) VALUES ('test2',md5('test2'));
+  create table users(
+  	username varchar(255) PRIMARY KEY, 
+  	password varchar(100) NOT NULL,
+  	fullname varchar(100),
+  	otheremail varchar(100),
+  	phone varchar(10));
+  INSERT INTO users(username,password) VALUES ('test1',md5('test1'));
+  INSERT INTO users(username,password) VALUES ('test2',md5('test2'));
 
-drop table if exists posts; 
-create table posts(
-	postID int PRIMARY KEY, 
-	title varchar(100) NOT NULL,
-	content varchar(100),
-	posttime varchar(100),
-	owner varchar(100),
-	FOREIGN KEY (owner) REFERENCES users(username) ON DELETE CASCADE);
+  drop table if exists posts; 
+  create table posts(
+  	postID int PRIMARY KEY, 
+  	title varchar(100) NOT NULL,
+  	content varchar(100),
+  	posttime varchar(100),
+  	owner varchar(100),
+  	FOREIGN KEY (owner) REFERENCES users(username) ON DELETE CASCADE);
 
 ```
 
@@ -149,166 +151,170 @@ create table posts(
 #### Form.php
 
 ```html
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>WAPH Team24-Login page</title>
-  <script type="text/javascript">
-      function displayTime() {
-        document.getElementById('digit-clock').innerHTML = "Current time:" + new Date();
-      }
-      setInterval(displayTime,500);
-  </script>
-</head>
-<body>
-  <h1>Mini Facebook Login Form</h1>
-  <h2>WAPH-TEAM24</h2>
-  <div id="digit-clock"></div>  
-<?php
-  //some code here
-  echo "Visited time: " . date("Y-m-d h:i:sa")
-?>
-  <form action="index.php" method="POST" class="form login">
-    Username:<input type="text" class="text_field" name="username" /> <br>
-    Password: <input type="password" class="text_field" name="password" /> <br>
-    <button class="button" type="submit">Login</button>
-  </form>
-</body>
-</html>
+          <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>WAPH Team24-Login page</title>
+    <script type="text/javascript">
+        function displayTime() {
+          document.getElementById('digit-clock').innerHTML = "Current time:" + new Date();
+        }
+        setInterval(displayTime,500);
+    </script>
+  </head>
+  <body>
+    <h1>Mini Facebook Login Form</h1>
+    <h2>WAPH-TEAM24</h2>
+    <div id="digit-clock"></div>  
+  <?php
+    //some code here
+    echo "Visited time: " . date("Y-m-d h:i:sa")
+  ?>
+    <form action="index.php" method="POST" class="form login">
+      Username:<input type="text" class="text_field" name="username" /> <br>
+      Password: <input type="password" class="text_field" name="password" /> <br>
+      <button class="button" type="submit">Login</button>
+    </form>
+  </body>
+  </html>
 
- ```  
+```  
 
  ![Login_form](img/s-9.jpeg)
 
 #### index.php
- ```php
-<?php
-    session_set_cookie_params(15*60,"/","waph-team24.minifacebook.com",TRUE,TRUE);
-	session_start();
-	require "database.php";
-	if(isset($_POST["username"]) and isset($_POST["password"])){    
-		if (checklogin_mysql($_POST["username"],$_POST["password"])) {
-			$_SESSION['authenticated'] = TRUE;
-			$_SESSION['username'] = $_POST["username"];	
-			$_SESSION["browser"] = $_SERVER["HTTP_USER_AGENT"];	
-		}else{
-			session_destroy();
-			echo "<script>alert('Invalid username/password');window.location='form.php';</script>";
-			die();
-		}
-	}
-	if(!isset($_SESSION['authenticated']) or $_SESSION['authenticated']!= TRUE){
-        session_destroy();
-        echo "<script>alert('You have not login.Please login first!')</script>";
-        header("Refresh: 0; url=form.php");
-        die();
-	}	
-	if ($_SESSION["browser"] != $_SERVER["HTTP_USER_AGENT"]){
-		session_destroy();
-		echo "<script>alert('Session hijacking attack is detected!');</script>";
-		header("Refresh:0; url=form.php");
-		die();
-	}
-	
-?>
-		<h2> Welcome <?php echo htmlentities( $_SESSION['username']); ?> !</h2>
-        <a href ="changepasswordform.php">Change password</a> | <a href ="profile.php">Edit profile</a> | <a href= "logout.php">Logout</a>
+```php
+  <?php
+      session_set_cookie_params(15*60,"/","waph-team24.minifacebook.com",TRUE,TRUE);
+  	session_start();
+  	require "database.php";
+  	if(isset($_POST["username"]) and isset($_POST["password"])){    
+  		if (checklogin_mysql($_POST["username"],$_POST["password"])) {
+  			$_SESSION['authenticated'] = TRUE;
+  			$_SESSION['username'] = $_POST["username"];	
+  			$_SESSION["browser"] = $_SERVER["HTTP_USER_AGENT"];	
+  		}else{
+  			session_destroy();
+  			echo "<script>alert('Invalid username/password');window.location='form.php';</script>";
+  			die();
+  		}
+  	}
+  	if(!isset($_SESSION['authenticated']) or $_SESSION['authenticated']!= TRUE){
+          session_destroy();
+          echo "<script>alert('You have not login.Please login first!')</script>";
+          header("Refresh: 0; url=form.php");
+          die();
+  	}	
+  	if ($_SESSION["browser"] != $_SERVER["HTTP_USER_AGENT"]){
+  		session_destroy();
+  		echo "<script>alert('Session hijacking attack is detected!');</script>";
+  		header("Refresh:0; url=form.php");
+  		die();
+  	}
+  	
+  ?>
+  		<h2> Welcome <?php echo htmlentities( $_SESSION['username']); ?> !</h2>
+          <a href ="changepasswordform.php">Change password</a> | <a href ="profile.php">Edit profile</a> | <a href= "logout.php">Logout</a>
  ```
 
 ![successful_login_page](img/s-10.jpeg)
 
 #### changepassword.php
- ```php
-<?php
-  require "session_auth.php";
-  require "database.php";
-  $token = $_POST['nocsrftoken'];
-  if (!isset($token) or $token!=$_SESSION['nocsrftoken']) {
-     echo "CSRF Attack is detected!";
-     die();
-  }
-  $username = $_SESSION['username'];
-  $password = $_REQUEST['password'];
-  if (isset($username) and isset($password)) {
-    echo "Debug> Changepassword.php got username=$username;newpassword=$password";
-       if(changepassword($username,$password)){
-            echo "password has been changed!";
-        }else{
-            echo " Change password Failed!";
-        }
-  }else{
-     echo " No username/password provided!";
-  }   
-    
-?>
+```php
+  <?php
+    require "session_auth.php";
+    require "database.php";
+    $token = $_POST['nocsrftoken'];
+    if (!isset($token) or $token!=$_SESSION['nocsrftoken']) {
+       echo "CSRF Attack is detected!";
+       die();
+    }
+    $username = $_SESSION['username'];
+    $password = $_REQUEST['password'];
+    if (isset($username) and isset($password)) {
+      echo "Debug> Changepassword.php got username=$username;newpassword=$password";
+         if(changepassword($username,$password)){
+              echo "password has been changed!";
+          }else{
+              echo " Change password Failed!";
+          }
+    }else{
+       echo " No username/password provided!";
+    }   
+      
+  ?>
+
+```
+
+![Changed_password_page](img/s-11.jpeg)
 
 
- ```
+#### session_auth.php 
 
- ![Changed_password_page](img/s-11.jpeg)
 
- #### session_auth.php
- ```php
+```php
 
-<?php
-    session_set_cookie_params(15*60,"/","waph-team24.minifacebook.com",TRUE,TRUE);
-	session_start();
-	if(!isset($_SESSION['authenticated']) or $_SESSION['authenticated']!= TRUE){
-        session_destroy();
-        echo "<script>alert('You have not login.Please login first!')</script>";
-        header("Refresh: 0; url=form.php");
-        die();
-	}	
-	if ($_SESSION["browser"] != $_SERVER["HTTP_USER_AGENT"]){
-		session_destroy();
-		echo "<script>alert('Session hijacking attack is detected!');</script>";
-		header("Refresh:0; url=form.php");
-		die();
-	}
+  <?php
+      session_set_cookie_params(15*60,"/","waph-team24.minifacebook.com",TRUE,TRUE);
+  	session_start();
+  	if(!isset($_SESSION['authenticated']) or $_SESSION['authenticated']!= TRUE){
+          session_destroy();
+          echo "<script>alert('You have not login.Please login first!')</script>";
+          header("Refresh: 0; url=form.php");
+          die();
+  	}	
+  	if ($_SESSION["browser"] != $_SERVER["HTTP_USER_AGENT"]){
+  		session_destroy();
+  		echo "<script>alert('Session hijacking attack is detected!');</script>";
+  		header("Refresh:0; url=form.php");
+  		die();
+  	}
 
- ```
+```
 
  
 
  ![Attack_detected](img/s-12.jpeg)
 
- #### Registration_form.php
+
+#### Registration_form.php
+
  ```php
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>WAPH-Login page</title>
-  <script type="text/javascript">
-      function displayTime() {
-        document.getElementById('digit-clock').innerHTML = "Current time:" + new Date();
-      }
-      setInterval(displayTime,500);
-  </script>
-</head>
-<body>
-  <h1>New User registration, WAPH</h1>
-  <h2>TEAM-24</h2>
-  <div id="digit-clock"></div>  
-<?php
-  //some code here
-      echo "Visited time: " . date("Y-m-d h:i:sa")
-?>
-  <form action="addnewuser.php" method="POST" class="form login">
-    Username:<input type="text" class="text_field" name="username" required 
-    pattern="^[\w.-]+@[\w-]+(.[\w-]+)*$"
-    title="Email address is required as username"
-    placeholder="Username is email"
-    onchange="this.setCustomeValidity(this.validity.patternMismatch?this.title: ' ');" /> <br>
-    Password: <input type="password" class="text_field" name="password" /> <br>
-    <button class="button" type="submit">Login</button>
-  </form>
-</body>
-</html>
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>WAPH-Login page</title>
+    <script type="text/javascript">
+        function displayTime() {
+          document.getElementById('digit-clock').innerHTML = "Current time:" + new Date();
+        }
+        setInterval(displayTime,500);
+    </script>
+  </head>
+  <body>
+    <h1>New User registration, WAPH</h1>
+    <h2>TEAM-24</h2>
+    <div id="digit-clock"></div>  
+  <?php
+    //some code here
+        echo "Visited time: " . date("Y-m-d h:i:sa")
+  ?>
+    <form action="addnewuser.php" method="POST" class="form login">
+      Username:<input type="text" class="text_field" name="username" required 
+      pattern="^[\w.-]+@[\w-]+(.[\w-]+)*$"
+      title="Email address is required as username"
+      placeholder="Username is email"
+      onchange="this.setCustomeValidity(this.validity.patternMismatch?this.title: ' ');" /> <br>
+      Password: <input type="password" class="text_field" name="password" /> <br>
+      <button class="button" type="submit">Login</button>
+    </form>
+  </body>
+  </html>
 
- ```
+```
 
 
  ![Registration_form](img/s-13.jpeg) 

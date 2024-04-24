@@ -7,13 +7,16 @@
      die();
   }
   $username = $_SESSION['username'];
-  $password = $_REQUEST['password'];
-  if (isset($username) and isset($password)) {
-    echo "Debug> Changepassword.php got username=$username;newpassword=$password";
-       if(changepassword($username,$password)){
-            echo "password has been changed!";
+  $oldpassword = $_REQUEST['oldpassword'];
+  $newpassword = $_REQUEST['newpassword'];
+  
+  if (isset($username) and isset($oldpassword) and isset($newpassword) ){
+    //echo "Debug> Changepassword.php got username=$username;newpassword=$newpassword";
+    echo "password has been changed!<a href='https://waph-team24.minifacebook.com/logout.php'>Logout</a>";
+       if(changepassword($username,$oldpassword,$newpassword)){
+            echo "password has been changed!<a href='https://waph-team24.minifacebook.com/logout.php'>Logout</a>";
         }else{
-            echo " Change password Failed!";
+            echo " Change password Failed!<a href='https://waph-team24.minifacebook.com/logout.php'>Logout</a>";
         }
   }else{
      echo " No username/password provided!";
