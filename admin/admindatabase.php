@@ -37,3 +37,15 @@ function enableUser($username) {
   }
   return false;
 }
+function getAllUsers() {
+  global $mysqli;
+  $query = "SELECT * FROM users";
+  $result = $mysqli->query($query);
+  $users = [];
+  if ($result) {
+      while ($row = $result->fetch_assoc()) {
+          $users[] = $row;
+      }
+  }
+  return $users;
+}

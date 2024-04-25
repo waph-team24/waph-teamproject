@@ -1,6 +1,4 @@
 <?php
-session_set_cookie_params(15*60,"/admin","waph-team24.minifacebook.com",TRUE,TRUE);
-
 session_start();
 include 'admindatabase.php';
 
@@ -24,12 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
 }
-if(!isset($_SESSION['superuser_authenticated'])){
-    echo "<script>alert('You cannot go here!');window.location='admin_form.php';</script>";
-    exit();
-}
+$users = getAllUsers();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,21 +36,37 @@ if(!isset($_SESSION['superuser_authenticated'])){
 <body>
 <div class="container mt-5">
     <h1>Admin Panel</h1>
-    <h2>Welcome, <?php echo isset($_SESSION['superuser_username']) ? $_SESSION['superuser_username'] : 'Admin'; ?>!</h2>
-    <a class="btn btn-primary" href="admin_logout.php">Logout</a>
+    <h2>Welcome Admin, <?php echo $_SESSION['superuser_username']; ?>!</h2>
+    <a href="admin_logout.php" class="btn btn-primary">Logout</a>
     <br><br>
     <h2>User Management</h2>
-    <?php if (isset($error)): ?>
-        <p style="color: red;"><?php echo $error; ?></p>
-    <?php endif; ?>
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-danger" name="disable_user">Disable User</button>
-        <button type="submit" class="btn btn-success" name="enable_user">Enable User</button>
-    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($users as $user): ?>
+                <tr>
+                    <td><?php echo $user['username']; ?></td>
+                    <td><?php echo $user['status']; ?></td>
+                    <td>
+                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <input type="hidden" name="username" value="<?php echo $user['username']; ?>">
+                            <?php if ($user['status'] == 'active'): ?>
+                                <button type="submit" class="btn btn-danger" name="disable_user">Disable User</button>
+                            <?php else: ?>
+                                <button type="submit" class="btn btn-success" name="enable_user">Enable User</button>
+                            <?php endif; ?>
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

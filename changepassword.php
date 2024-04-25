@@ -11,7 +11,7 @@
   $newpassword = $_REQUEST['newpassword'];
   
   if (isset($username) and isset($oldpassword) and isset($newpassword) ){
-    //echo "Debug> Changepassword.php got username=$username;newpassword=$newpassword";
+   //  echo "Debug> Changepassword.php got username=$username;newpassword=$newpassword";
     echo "password has been changed!<a href='https://waph-team24.minifacebook.com/logout.php'>Logout</a>";
        if(changepassword($username,$oldpassword,$newpassword)){
             echo "password has been changed!<a href='https://waph-team24.minifacebook.com/logout.php'>Logout</a>";

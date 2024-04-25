@@ -1,11 +1,29 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome</title>
-    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://img.freepik.com/premium-photo/facebook-logo-buutton-phone-screen-background-premium-photo_261703-194.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: transparent;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-right: 20px; }
+    </style>
 </head>
 <body>
 <?php
@@ -17,11 +35,10 @@
             $_SESSION['authenticated'] = TRUE;
             $_SESSION['username'] = $_POST["username"];    
             $_SESSION["browser"] = $_SERVER["HTTP_USER_AGENT"];
-			$_SESSION["csrf"] = bin2hex(openssl_random_pseudo_bytes(16));
-    
+            $_SESSION["csrf"] = bin2hex(openssl_random_pseudo_bytes(16));
         }else{
             session_destroy();
-            echo "<script>alert('Invalid username/password');window.location='form.php';</script>";
+            echo "<script>alert('Your Account is disabled');window.location='form.php';</script>";
             die();
         }
     }
@@ -38,7 +55,7 @@
         die();
     }
 ?>
-<div class="container mt-5">
+<div class="container">
     <h2> Welcome <?php echo htmlentities( $_SESSION['username']); ?> !</h2>
     <a class="btn btn-primary" href ="changepasswordform.php">Change password</a>
     <a class="btn btn-primary" href ="edituserprofileform.php">Edit profile</a>
@@ -47,3 +64,4 @@
 </div>
 </body>
 </html>
+```

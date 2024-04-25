@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>WAPH Team24-Login page</title>
+  <title>Admin-Login page</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -73,7 +73,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Mini Facebook Login Form</h1>
+    <h1>Mini Facebook Admin Login Form</h1>
     <h2>WAPH-TEAM24</h2>
     <div id="digit-clock"></div>  
 
@@ -88,9 +88,7 @@
       <button class="button" type="submit">Login</button>
     </form>
     
-    <form action="registrationform.php" method="POST" class="form register">
-      <button class="button" type="submit">Signup</button>
-    </form>
+   
   </div>
 </body>
 </html>

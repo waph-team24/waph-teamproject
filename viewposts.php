@@ -99,5 +99,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     <?php endforeach; ?>
 </div>
+<a href="index.php" class="btn btn-secondary">Go back</a>
 </body>
 </html>

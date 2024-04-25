@@ -36,7 +36,7 @@
      global $mysqli;
      $prepared_sql ="UPDATE  users SET password = md5(?) WHERE username =? and password=md(?);";
      $stmt = $mysqli->prepare($prepared_sql);
-     $stmt-> bind_param("sss",$username,$newpassword,$oldpassword);
+     $stmt-> bind_param("sss",$newpassword,$username ,$oldpassword);
      if($stmt->execute()) return TRUE; 
       return FALSE;
     }
