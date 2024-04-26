@@ -3,13 +3,7 @@ session_start();
 include 'admindatabase.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['disable_user'])) {
-        $username = $_POST['username'];
-        disableUser($username);
-    } elseif (isset($_POST['enable_user'])) {
-        $username = $_POST['username'];
-        enableUser($username);
-    } elseif (isset($_POST['username']) && isset($_POST['password'])) {
+    if (isset($_POST['username']) && isset($_POST['password'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
         $superuser = checkSuperuserLogin($username, $password);
@@ -18,9 +12,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['superuser_username'] = $superuser['username'];
         } else {
             $error = "Invalid username/password";
+            session_destroy();
         }
     }
+    else{
+        $error = "Please enter username and password";
+        session_destroy();
     
+    }
+    
+}
+elseif ($_SERVER["REQUEST_METHOD"] == "GET") {
+    if (isset($_GET['disable_user'])) {
+        $username = $_GET['username'];
+        disableUser($username);
+    } elseif (isset($_GET['enable_user'])) {
+        $username = $_GET['username'];
+        enableUser($username);
+    }
+}
+if (!isset($_SESSION['superuser_authenticated']) || $_SESSION['superuser_authenticated'] !== true) {
+    echo "<script>alert('You are not a SuperUser');window.location='admin_form.php'</script>";
+    exit;
 }
 $users = getAllUsers();
 ?>
@@ -36,7 +49,7 @@ $users = getAllUsers();
 <body>
 <div class="container mt-5">
     <h1>Admin Panel</h1>
-    <h2>Welcome Admin, <?php echo $_SESSION['superuser_username']; ?>!</h2>
+    <h2>Welcome, <?php echo $_SESSION['superuser_username']; ?>!</h2>
     <a href="admin_logout.php" class="btn btn-primary">Logout</a>
     <br><br>
     <h2>User Management</h2>
@@ -54,7 +67,7 @@ $users = getAllUsers();
                     <td><?php echo $user['username']; ?></td>
                     <td><?php echo $user['status']; ?></td>
                     <td>
-                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get">
                             <input type="hidden" name="username" value="<?php echo $user['username']; ?>">
                             <?php if ($user['status'] == 'active'): ?>
                                 <button type="submit" class="btn btn-danger" name="disable_user">Disable User</button>

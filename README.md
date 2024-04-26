@@ -21,9 +21,9 @@ Project homepage (public): <https://github.com/waph-team24/waph-team24.github.io
 
 | Date        |   Version      |  Description |
 |:------------|:-------------: |-------------:|
-| 21/03/2024  |  0.0           | Init draft   |
-| 04/04/2024  |  0.1           | Filling Document|
-
+| 21/03/2024  |  0.0           | Sprint 0     |
+| 04/04/2024  |  0.1           | Sprint 1     |
+| 20/04/2024  |  0.2           | Sprint 2.    |
 
 
 # Overview
@@ -320,5 +320,53 @@ Duration: 28/03/2024-07/03/2024
  ![Registration_form](img/s-13.jpeg) 
 
 
- ![Successful_registration](img/s-14.jpeg)
+ ![Successful_registration](img/s-14.jpeg)   
+
+ ### SPRINT : 2
+
+#### Completed Tasks:
+
+##### Task-1: Database Restructuring
+Created new tables: posts, messages, comments for better data organization.
+##### Task-2: User Post Viewing
+Implemented functionality allowing users to view posts of other users post-login.
+##### Task-3: User Post Creation
+Enabled users to add new posts post-login.
+##### Task-4: Post Editing and Deletion
+Restricted post editing and deletion to the original user for security and control purposes.
+##### Task-5: Post Comments
+Implemented the ability for users to comment on posts made by others.
+##### Task-6: Documentation Update
+Updated the README file to reflect changes made in this sprint.
+
+![Login_page](img/s-15.jpeg) 
+
+![After_Login_Successfully](img/s-16.jpeg)
+
+![EditUser_ProfileForm](img/s-17.jpeg)
+
+![Profile Updated_Successfully](img/s-18.jpeg)
+
+![ChangePassword_form](img/s-19.jpeg)
+
+![Password_changed](img/s-20.jpeg)
+
+![Creating Post](img/s-21.jpeg)
+
+![View Post](img/s-22.jpeg)
+
+![Comment_Post](img/s-23.jpeg)
+
+![Comment Post](img/s-24.jpeg)
+
+![Log out](img/s-25.jpeg)
+
+#### Team Members Contribution:
+
+1. Dilip Kumar Sanipina contribution in completing Task-3, Task-6, and updated Index.php file, 5 hours and 3 commits. 
+2. Sai Kumar Gadde contribution 2 commits, 3 hours, contributed in Task-4 frontend and backend, and also made changes to database.php file.
+3. Siva Sai Manoj Korlepara Contributed in Task-5, and Task-4 delete post with 2 commits and 3 hours. 
+4. Uma Sathvik Meka contribution 2 commits,3 hours, contributed in Task-3 and contributed in solve the bugs and documentation
+
+
 
