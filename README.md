@@ -1,35 +1,3 @@
-[23:36, 4/25/2024] DILIP KUMAR: # WAPH-Web Application Programming and Hacking
-
-## Instructor: Dr. Phu Phung
-
-# Mini-Facebook
-
-# Team members
-
-1. Sai Kumar Gadde, gaddesr@mail.uc.edu
-2. Dilip Kumar Sanipina, sanipidr@mail.uc.edu
-3. Uma Satwik Meka, mekauk@mail.uc.edu
-4. Siva Sai Manoj Korlepara, korlepsj@mail.uc.edu
-
-# Project Management Information
-
-Source code repository (private access):  <https://github.com/waph-team10/waphteamproject/>
-
-Project homepage (public): <https://github.com/waph-team24/waph-team24.github.io>
-
-## Revision History
-
-| Date        |   Version      |  Description |
-|:------------|:-------------: |-------------:|
-| 21/03/2024  |  0.0           | Sprint 0     |
-| 04/04/2024  |  0.1           | Sprint 1     |
-| 20/04/2024  |  0.2           | Sprint 2.    |
-
-
-# Overview
- 
-# S…
-[23:44, 4/25/2024] DILIP KUMAR: # WAPH-Web Application Programming and Hacking
 
 ## Instructor: Dr. Phu Phung
 
@@ -306,9 +274,9 @@ c
 
 # Appendix
 
-[demo video]: (https://youtu.be/zywN3zHJUgs) 
+- demo video: (https://youtu.be/zywN3zHJUgs) 
 
-[team website]: (https://waph-team24.minifacebook.com)
+- team website: (https://waph-team24.minifacebook.com)
 
 
 
