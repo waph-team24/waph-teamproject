@@ -1,4 +1,35 @@
-# WAPH-Web Application Programming and Hacking
+[23:36, 4/25/2024] DILIP KUMAR: # WAPH-Web Application Programming and Hacking
+
+## Instructor: Dr. Phu Phung
+
+# Mini-Facebook
+
+# Team members
+
+1. Sai Kumar Gadde, gaddesr@mail.uc.edu
+2. Dilip Kumar Sanipina, sanipidr@mail.uc.edu
+3. Uma Satwik Meka, mekauk@mail.uc.edu
+4. Siva Sai Manoj Korlepara, korlepsj@mail.uc.edu
+
+# Project Management Information
+
+Source code repository (private access):  <https://github.com/waph-team10/waphteamproject/>
+
+Project homepage (public): <https://github.com/waph-team24/waph-team24.github.io>
+
+## Revision History
+
+| Date        |   Version      |  Description |
+|:------------|:-------------: |-------------:|
+| 21/03/2024  |  0.0           | Sprint 0     |
+| 04/04/2024  |  0.1           | Sprint 1     |
+| 20/04/2024  |  0.2           | Sprint 2.    |
+
+
+# Overview
+ 
+# S…
+[23:44, 4/25/2024] DILIP KUMAR: # WAPH-Web Application Programming and Hacking
 
 ## Instructor: Dr. Phu Phung
 
@@ -30,7 +61,7 @@ Project homepage (public): <https://github.com/waph-team24/waph-team24.github.io
  
 # System Analysis
 
-_(Start from Sprint 0, keep updating)_
+(Start from Sprint 0, keep updating)
 
 # Demo (screenshots)
 
@@ -57,7 +88,7 @@ _(Start from Sprint 0, keep updating)_
 
 # Software Process Management
 
-_(Start from Sprint 0, keep updating)_
+(Start from Sprint 0, keep updating)
 
 
 ## Scrum process
@@ -106,38 +137,58 @@ Duration: 28/03/2024-07/03/2024
 # Appendix
 
 #### Database-account.sql
-  ```sql
+  sql
           create database waph_team;
           CREATE USER 'waph-team24'@'localhost' IDENTIFIED BY "team@24";
           GRANT ALL ON waph_team.* TO 'waph-team24'@'localhost';
- ```
+ 
 
 #### Database-data.sql
- ```sql
-          drop table if exists users; 
-  drop table if exists messages; 
-  drop table if exists sends; 
-  drop table if exists received;
+ sql
+          use waph_team;
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS posts;  
+DROP TABLE IF EXISTS users;  
+create table users(
+  username varchar(255) PRIMARY KEY, 
+  password varchar(100) NOT NULL,
+  fullname varchar(100),
+  otheremail varchar(100),
+  phone varchar(10),
+  status ENUM('active', 'disabled') DEFAULT 'active';
+);
+INSERT INTO users(username,password) VALUES ('test1',md5('test1'));
+INSERT INTO users(username,password) VALUES ('test2',md5('test2'));
 
-  create table users(
-  	username varchar(255) PRIMARY KEY, 
-  	password varchar(100) NOT NULL,
-  	fullname varchar(100),
-  	otheremail varchar(100),
-  	phone varchar(10));
-  INSERT INTO users(username,password) VALUES ('test1',md5('test1'));
-  INSERT INTO users(username,password) VALUES ('test2',md5('test2'));
+ 
+create table posts (
+    postID INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL, 
+    content VARCHAR(100),
+    posttime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    owner VARCHAR(50),
+    FOREIGN KEY (owner) REFERENCES users(username) ON DELETE CASCADE
+);
 
-  drop table if exists posts; 
-  create table posts(
-  	postID int PRIMARY KEY, 
-  	title varchar(100) NOT NULL,
-  	content varchar(100),
-  	posttime varchar(100),
-  	owner varchar(100),
-  	FOREIGN KEY (owner) REFERENCES users(username) ON DELETE CASCADE);
 
-```
+create table comments (
+    commentID INT AUTO_INCREMENT PRIMARY KEY,
+    postID INT,
+    comment VARCHAR(255) NOT NULL,
+    commenter VARCHAR(50),
+    commentTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (postID) REFERENCES posts(postID) ON DELETE CASCADE,
+    FOREIGN KEY (commenter) REFERENCES users(username) ON DELETE CASCADE
+);
+
+create table superuser (
+    username varchar(255) PRIMARY KEY, 
+    password varchar(100) NOT NULL,
+);
+
+INSERT into superuser values ('admin',md5('admin'));
+
+
 
 ![database-data](img/s-8.jpeg)
 
@@ -150,196 +201,54 @@ Duration: 28/03/2024-07/03/2024
 
 #### Form.php
 
-```html
-          <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>WAPH Team24-Login page</title>
-    <script type="text/javascript">
-        function displayTime() {
-          document.getElementById('digit-clock').innerHTML = "Current time:" + new Date();
-        }
-        setInterval(displayTime,500);
-    </script>
-  </head>
-  <body>
-    <h1>Mini Facebook Login Form</h1>
-    <h2>WAPH-TEAM24</h2>
-    <div id="digit-clock"></div>  
-  <?php
-    //some code here
-    echo "Visited time: " . date("Y-m-d h:i:sa")
-  ?>
-    <form action="index.php" method="POST" class="form login">
-      Username:<input type="text" class="text_field" name="username" /> <br>
-      Password: <input type="password" class="text_field" name="password" /> <br>
-      <button class="button" type="submit">Login</button>
-    </form>
-  </body>
-  </html>
-
-```  
-
- ![Login_form](img/s-9.jpeg)
-
-#### index.php
-```php
-  <?php
-      session_set_cookie_params(15*60,"/","waph-team24.minifacebook.com",TRUE,TRUE);
-  	session_start();
-  	require "database.php";
-  	if(isset($_POST["username"]) and isset($_POST["password"])){    
-  		if (checklogin_mysql($_POST["username"],$_POST["password"])) {
-  			$_SESSION['authenticated'] = TRUE;
-  			$_SESSION['username'] = $_POST["username"];	
-  			$_SESSION["browser"] = $_SERVER["HTTP_USER_AGENT"];	
-  		}else{
-  			session_destroy();
-  			echo "<script>alert('Invalid username/password');window.location='form.php';</script>";
-  			die();
-  		}
-  	}
-  	if(!isset($_SESSION['authenticated']) or $_SESSION['authenticated']!= TRUE){
-          session_destroy();
-          echo "<script>alert('You have not login.Please login first!')</script>";
-          header("Refresh: 0; url=form.php");
-          die();
-  	}	
-  	if ($_SESSION["browser"] != $_SERVER["HTTP_USER_AGENT"]){
-  		session_destroy();
-  		echo "<script>alert('Session hijacking attack is detected!');</script>";
-  		header("Refresh:0; url=form.php");
-  		die();
-  	}
-  	
-  ?>
-  		<h2> Welcome <?php echo htmlentities( $_SESSION['username']); ?> !</h2>
-          <a href ="changepasswordform.php">Change password</a> | <a href ="profile.php">Edit profile</a> | <a href= "logout.php">Logout</a>
- ```
+![form.php code](img/form.jpeg)
 
 ![successful_login_page](img/s-10.jpeg)
 
 #### changepassword.php
-```php
-  <?php
-    require "session_auth.php";
-    require "database.php";
-    $token = $_POST['nocsrftoken'];
-    if (!isset($token) or $token!=$_SESSION['nocsrftoken']) {
-       echo "CSRF Attack is detected!";
-       die();
-    }
-    $username = $_SESSION['username'];
-    $password = $_REQUEST['password'];
-    if (isset($username) and isset($password)) {
-      echo "Debug> Changepassword.php got username=$username;newpassword=$password";
-         if(changepassword($username,$password)){
-              echo "password has been changed!";
-          }else{
-              echo " Change password Failed!";
-          }
-    }else{
-       echo " No username/password provided!";
-    }   
-      
-  ?>
 
-```
+![chnagepassword.php code](img/pass.jpeg)
 
 ![Changed_password_page](img/s-11.jpeg)
 
 
 #### session_auth.php 
 
-
-```php
-
-  <?php
-      session_set_cookie_params(15*60,"/","waph-team24.minifacebook.com",TRUE,TRUE);
-  	session_start();
-  	if(!isset($_SESSION['authenticated']) or $_SESSION['authenticated']!= TRUE){
-          session_destroy();
-          echo "<script>alert('You have not login.Please login first!')</script>";
-          header("Refresh: 0; url=form.php");
-          die();
-  	}	
-  	if ($_SESSION["browser"] != $_SERVER["HTTP_USER_AGENT"]){
-  		session_destroy();
-  		echo "<script>alert('Session hijacking attack is detected!');</script>";
-  		header("Refresh:0; url=form.php");
-  		die();
-  	}
-
-```
+![session auth.php code](img/s-10.jpeg)
 
  
 
- ![Attack_detected](img/s-12.jpeg)
+![Attack_detected](img/s-12.jpeg)
 
 
 #### Registration_form.php
 
- ```php
-
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>WAPH-Login page</title>
-    <script type="text/javascript">
-        function displayTime() {
-          document.getElementById('digit-clock').innerHTML = "Current time:" + new Date();
-        }
-        setInterval(displayTime,500);
-    </script>
-  </head>
-  <body>
-    <h1>New User registration, WAPH</h1>
-    <h2>TEAM-24</h2>
-    <div id="digit-clock"></div>  
-  <?php
-    //some code here
-        echo "Visited time: " . date("Y-m-d h:i:sa")
-  ?>
-    <form action="addnewuser.php" method="POST" class="form login">
-      Username:<input type="text" class="text_field" name="username" required 
-      pattern="^[\w.-]+@[\w-]+(.[\w-]+)*$"
-      title="Email address is required as username"
-      placeholder="Username is email"
-      onchange="this.setCustomeValidity(this.validity.patternMismatch?this.title: ' ');" /> <br>
-      Password: <input type="password" class="text_field" name="password" /> <br>
-      <button class="button" type="submit">Login</button>
-    </form>
-  </body>
-  </html>
-
-```
+ ![Registrationfprm.php code](img/s-10.jpeg)
 
 
- ![Registration_form](img/s-13.jpeg) 
+![Registration_form](img/s-13.jpeg) 
 
 
- ![Successful_registration](img/s-14.jpeg)   
+![Successful_registration](img/s-14.jpeg)   
 
- ### SPRINT : 2
+
+### SPRINT : 2
 
 #### Completed Tasks:
 
 ##### Task-1: Database Restructuring
-Created new tables: posts, messages, comments for better data organization.
+- Created new tables: posts, messages, comments for better data organization.
 ##### Task-2: User Post Viewing
-Implemented functionality allowing users to view posts of other users post-login.
+- Implemented functionality allowing users to view posts of other users post-login.
 ##### Task-3: User Post Creation
-Enabled users to add new posts post-login.
+- Enabled users to add new posts post-login.
 ##### Task-4: Post Editing and Deletion
-Restricted post editing and deletion to the original user for security and control purposes.
+- Restricted post editing and deletion to the original user for security and control purposes.
 ##### Task-5: Post Comments
-Implemented the ability for users to comment on posts made by others.
+- Implemented the ability for users to comment on posts made by others.
 ##### Task-6: Documentation Update
-Updated the README file to reflect changes made in this sprint.
-
-![Login_page](img/s-15.jpeg) 
+- Updated the README file to reflect changes made in this sprint.
+c
 
 ![After_Login_Successfully](img/s-16.jpeg)
 
@@ -366,7 +275,38 @@ Updated the README file to reflect changes made in this sprint.
 1. Dilip Kumar Sanipina contribution in completing Task-3, Task-6, and updated Index.php file, 5 hours and 3 commits. 
 2. Sai Kumar Gadde contribution 2 commits, 3 hours, contributed in Task-4 frontend and backend, and also made changes to database.php file.
 3. Siva Sai Manoj Korlepara Contributed in Task-5, and Task-4 delete post with 2 commits and 3 hours. 
-4. Uma Sathvik Meka contribution 2 commits,3 hours, contributed in Task-3 and contributed in solve the bugs and documentation
+4. Uma Sathvik Meka contribution 2 commits,3 hours, contributed in Task-3 and contributed in solve the bugs and documentation 
 
+### SPRINT :3 
+
+#### Completed Tasks: 
+
+- Here we have created database for superuser and created super userform.
+![](img/s-26.jpeg)
+![](img/s-27.jpeg)
+
+
+
+
+
+#### SECURITY AND NON-FUNCTATIONAL REQUIREMENTS
+![](img/sn-1.jpeg)
+![](img/sn-3.jpeg)
+![](img/sn-3.1.jpeg)
+![](img/sn-4.jpeg)
+![](img/sn-5.jpeg)
+![](img/sn-6.jpeg)
+![](img/sn-7.jpeg)
+![](img/sn-7.1.jpeg)
+
+![](img/sn-8.1.jpeg)
+![](img/sn-8.2.jpeg)
+![](img/sn-8.3.jpeg)
+![](img/sn-8.4.jpeg)
+![](img/sn-8.5.jpeg)
+![](img/sn-9.jpeg) 
+
+- demo video:
+https://youtu.be/zywN3zHJUgs
 
 
