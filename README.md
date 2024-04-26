@@ -23,6 +23,7 @@ Project homepage (public): <https://github.com/waph-team24/waph-team24.github.io
 | 21/03/2024  |  0.0           | Sprint 0     |
 | 04/04/2024  |  0.1           | Sprint 1     |
 | 20/04/2024  |  0.2           | Sprint 2.    |
+|24/04/2024   |  0.4           | Sprint 3     |   
 
 
 # Overview
@@ -110,53 +111,8 @@ Duration: 28/03/2024-07/03/2024
  
 
 #### Database-data.sql
- sql
-          use waph_team;
-DROP TABLE IF EXISTS comments;
-DROP TABLE IF EXISTS posts;  
-DROP TABLE IF EXISTS users;  
-create table users(
-  username varchar(255) PRIMARY KEY, 
-  password varchar(100) NOT NULL,
-  fullname varchar(100),
-  otheremail varchar(100),
-  phone varchar(10),
-  status ENUM('active', 'disabled') DEFAULT 'active';
-);
-INSERT INTO users(username,password) VALUES ('test1',md5('test1'));
-INSERT INTO users(username,password) VALUES ('test2',md5('test2'));
 
- 
-create table posts (
-    postID INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(100) NOT NULL, 
-    content VARCHAR(100),
-    posttime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    owner VARCHAR(50),
-    FOREIGN KEY (owner) REFERENCES users(username) ON DELETE CASCADE
-);
-
-
-create table comments (
-    commentID INT AUTO_INCREMENT PRIMARY KEY,
-    postID INT,
-    comment VARCHAR(255) NOT NULL,
-    commenter VARCHAR(50),
-    commentTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (postID) REFERENCES posts(postID) ON DELETE CASCADE,
-    FOREIGN KEY (commenter) REFERENCES users(username) ON DELETE CASCADE
-);
-
-create table superuser (
-    username varchar(255) PRIMARY KEY, 
-    password varchar(100) NOT NULL,
-);
-
-INSERT into superuser values ('admin',md5('admin'));
-
-
-
-![database-data](img/s-8.jpeg)
+ ![database-data](img/database.jpeg)
 
 
 - The ER (Entity-Relationship) diagram shows the structure and relationships between the "users" and "posts" tables. In the graphic, the "users" table is the primary entity, comprising characteristics such as "username," "password," "fullname," "otheremail," and "phone," with "username" serving as the primary key. This table contains information about specific system users, each of whom is recognized by a username.
@@ -214,7 +170,6 @@ INSERT into superuser values ('admin',md5('admin'));
 - Implemented the ability for users to comment on posts made by others.
 ##### Task-6: Documentation Update
 - Updated the README file to reflect changes made in this sprint.
-c
 
 ![After_Login_Successfully](img/s-16.jpeg)
 
@@ -248,35 +203,80 @@ c
 #### Completed Tasks: 
 
 - Here we have created database for superuser and created super userform.
+
 ![](img/s-26.jpeg)
+
+- The super user can only diasble the registered users 
+
 ![](img/s-27.jpeg)
 
+- here the user has been disabeled we can see the status of user.
 
+![](img/termin.jpeg)
 
 
 
 #### SECURITY AND NON-FUNCTATIONAL REQUIREMENTS
+
+- The system has been deployed on an HTTPS server, involving the creation and utilization of SSL keys to ensure secure communications. By generating SSL cryptographic keys, the system encrypts data transmitted between the server and clients, safeguarding it against eavesdropping and tampering. This deployment strategy enhances the security of sensitive transactions and data exchanges, making it crucial for systems handling confidential information.
+
+
 ![](img/sn-1.jpeg)
+
+- the passwords within the system are securely hashed before being stored in the database, enhancing security by protecting user credentials from being exposed in plain text. Additionally, the system's architecture avoids using the MySQL root account in the PHP code, which is a best practice to prevent unauthorized database access and potential security breaches. By not using the root account, the system minimizes risks associated with elevated privileges, further securing the database interactions.the passwords within the system are securely hashed before being stored in the database, enhancing security by protecting user credentials from being exposed in plain text. Additionally, the system's architecture avoids using the MySQL root account in the PHP code, which is a best practice to prevent unauthorized database access and potential security breaches. By not using the root account, the system minimizes risks associated with elevated privileges, further securing the database interactions.
+
+
 ![](img/sn-3.jpeg)
+
+- the system exclusively uses prepared statements for executing SQL queries. This approach enhances security by preventing SQL injection attacks, a common vulnerability where attackers can execute malicious SQL code. Prepared statements work by separating SQL logic from the data, ensuring that user input is treated strictly as data and not executable code. This method not only improves security but also optimizes query performance by allowing the database to reuse the same query plan for similar queries.
+
 ![](img/sn-3.1.jpeg)
+
+- the comprehensive security measures implemented across different layers of the application stack. Input validation is performed at the HTML layer to ensure that data entered through web forms adheres to expected formats, at the PHP layer to catch and sanitize any data before it is processed by the server, and at the SQL layer to prevent malicious data from affecting database operations. This multi-layered approach to validation is crucial for preventing common security threats such as cross-site scripting (XSS) and SQL injection, thereby safeguarding the integrity and security of the application
+
 ![](img/sn-4.jpeg)
+
+- the security practice of cleaning data before it is displayed on web pages, ensuring that it is free from malicious code that could lead to cross-site scripting (XSS) attacks. This process involves removing or encoding potentially dangerous characters and scripts from HTML content, thereby preventing attackers from injecting harmful scripts that could be executed in the browser of users visiting the site. Sanitization of HTML outputs is a critical security measure that protects both the website and its users from various types of cyber threats, maintaining the integrity and safety of the web environment.
+
 ![](img/sn-5.jpeg)
-![](img/sn-6.jpeg)
-![](img/sn-7.jpeg)
-![](img/sn-7.1.jpeg)
+
+- the implementation of role-based access control (RBAC) within the system, distinguishing between regular users and super users. This security model ensures that regular users do not have the permissions to log in as a superuser, maintaining a clear separation of privileges. Additionally, it restricts regular users from editing or updating posts made by other users, thereby enforcing strict access controls based on user roles. This approach is crucial for maintaining the integrity and confidentiality of the data, as it prevents unauthorized access and modifications, ensuring that each user can only perform actions within their designated permissions.
 
 ![](img/sn-8.1.jpeg)
+
 ![](img/sn-8.2.jpeg)
+
 ![](img/sn-8.3.jpeg)
+
 ![](img/sn-8.4.jpeg)
+
+- the super user can only login into the admin page other users are restricted and can't login.The super user details are given at the time of database creation.
+
 ![](img/sn-8.5.jpeg)
+
+- the security measures implemented to protect user sessions from unauthorized access and manipulation. Session authentication involves verifying the identity of users whenever they initiate a session, ensuring that the user is genuinely who they claim to be. Additionally, measures to prevent session hijacking are in place, which protect active user sessions from being taken over by attackers through techniques like session fixation or session sidejacking. These strategies are vital for maintaining secure user interactions within the system, safeguarding both the user's credentials and their ongoing activities.
+
+
+![](img/sn-6.jpeg)
+
+- Here , the implementation of measures to guard against cross-site request forgery (CSRF) attacks, a type of security threat where unauthorized commands are transmitted from a user that the web application trusts. CSRF protection typically involves the use of tokens that are validated with each client request to ensure that the request is intentional and originates from the authenticated user, not an attacker. This security measure is crucial for preventing attackers from exploiting the web application to perform unwanted actions on behalf of the authenticated user, thereby safeguarding user interactions and data integrity within the
+
+![](img/sn-7.jpeg)
+
+![](img/sn-7.1.jpeg)
+
+
+- we have integrated the css styling to each page in our website.
+
 ![](img/sn-9.jpeg) 
 
 # Appendix
 
-- demo video: (https://youtu.be/zywN3zHJUgs) 
+- Demonstration video: <https://youtu.be/zywN3zHJUgs>
 
-- team website: (https://waph-team24.minifacebook.com)
+- Team website: <https://github.com/waph-team24/waph-team24.github.io>
+
+- Source code: <https://github.com/waph-team24/waph-teamproject/tree/main>
 
 
 
